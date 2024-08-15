@@ -1,5 +1,5 @@
 class ShortsController < ApplicationController
-  before_action :set_short, only: %i[ show ]
+  before_action :set_short, only: %i[ show create ]
 
   # GET /shorts/1
   def show
@@ -13,12 +13,12 @@ class ShortsController < ApplicationController
 
   # POST /shorts
   def create
-    @short = Short.new(short_params)
+    short = Short.find_or_initialize_by(short_params)
 
-    if @short.save
-      render json: @short, status: :created, location: @short
+    if short.save
+      render json: short, status: :created, location: short
     else
-      render json: @short.errors, status: :unprocessable_entity
+      render json: short.errors, status: :unprocessable_entity
     end
   end
 
@@ -30,6 +30,6 @@ class ShortsController < ApplicationController
   end
 
   def short_params
-    params.permit(:long_url)
+    params.permit(:long_url, :short_url)
   end
 end
