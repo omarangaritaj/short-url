@@ -8,7 +8,7 @@ class ShortsController < ApplicationController
     @short.increment_counter
     @short.save
 
-    render json: { url: @short }, status: :ok
+    render json: { short_url: "#{short_url}#{@short.short_url}", counter: @short.counter }, status: :ok
   end
 
   # POST /shorts
@@ -16,7 +16,7 @@ class ShortsController < ApplicationController
     short = Short.find_or_initialize_by(short_params)
 
     if short.save
-      render json: short, status: :created, location: short
+      render json: { short_url: "#{short_url}#{short.short_url}" }, status: :created, location: short
     else
       render json: short.errors, status: :unprocessable_entity
     end
